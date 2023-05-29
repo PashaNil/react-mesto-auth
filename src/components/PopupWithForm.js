@@ -1,25 +1,14 @@
 import React from 'react';
+import Popup from './Popup';
 
 function PopupWithForm(props) {
-
-  // Обработчик закрытия попапов по оверлею
-  function closePopupOverlay(evt) {
-    if (evt.target.classList.contains("popup_opened")) {
-      props.onClose();
-    }
-  }
-
   return (
-    <div
-      className={`popup popup_type_${props.name} ${props.isOpen ? 'popup_opened' : ''}`}
-      onClick={closePopupOverlay}>
-      <div className="popup__container">
-        <button
-          className="popup__close-icon opacity-hover"
-          type="button"
-          aria-label="Закрытие окна"
-          onClick={props.onClose}
-        ></button>
+        <Popup 
+        name={props.name}
+        isOpen={props.isOpen}
+        onClose={props.onClose}
+        classContainer="container"
+        >
         <h2 className="popup__title">{props.title}</h2>
         <form className={`popup__form popup__form_type_${props.name}`} name={props.name} noValidate onSubmit={props.onSubmit}>
           <fieldset className="popup__fieldset">
@@ -28,8 +17,7 @@ function PopupWithForm(props) {
           <button className="popup__button" type="submit" aria-label="Сохранить форму"
           >{props.button}</button>
         </form>
-      </div>
-    </div>
+        </Popup>
   )
 }
 

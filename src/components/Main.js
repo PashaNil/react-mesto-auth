@@ -5,7 +5,6 @@ import Card from './Card';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function Main({onEditAvatar, onEditProfile, onAddPlace, onCardClick, cards, onCardLike, onCardDelete}) {
-
   // Получение контекста с данными пользователя из контекста
   const currentUser = useContext(CurrentUserContext);
 
