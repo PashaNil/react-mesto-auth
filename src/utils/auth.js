@@ -1,3 +1,5 @@
+import { getResponseData } from "./getResponseData";
+
 export const baseUrl = "https://auth.nomoreparties.co";
 
 export const register = (email, password) => {
@@ -12,7 +14,7 @@ export const register = (email, password) => {
             'email': email
         })
     })
-        .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`));
+        .then(getResponseData);
 
 }
 
@@ -28,7 +30,7 @@ export const authorize = (email, password) => {
             'email': email
         })
     })
-        .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`));
+        .then(getResponseData);
 
 }
 
@@ -41,5 +43,5 @@ export const getToken = (token) => {
             'Authorization': `Bearer ${token}`
         }
     })
-        .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`));
+        .then(getResponseData);
 }

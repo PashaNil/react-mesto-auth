@@ -31,7 +31,7 @@ function Login({ handleLogin }) {
                 <h2 className="authorization__title">Вход</h2>
                 <form className="authorization__form" onSubmit={handleSubmit}>
                     <fieldset className="authorization__fieldset">
-                        <input className="authorization__input" type="url" id="email" name="email"
+                        <input className="authorization__input" type="email" id="email" name="email"
                             placeholder="Email" required onChange={handleChange} />
                         <span className="authorization__input-error email-error"></span>
                         <input className="authorization__input" type="password" id="password" name="password"

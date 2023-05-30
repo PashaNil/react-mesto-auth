@@ -16,6 +16,9 @@ import { ProtectedRoute } from './ProtectedRoute';
 import InfoTooltip from './InfoTooltip';
 import * as auth from '../utils/auth';
 
+import imgAuthorizationAllowed from '../images/Authorization-access-allowed.svg'
+import imgAuthorizationError from '../images/Authorization-error.svg'
+
 
 function App() {
 
@@ -26,10 +29,9 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
 
-  // Открытие попапа со статусом регистрации и авторизации
-  const [infoTooltipPopupOpen, setInfoTooltipPopupOpen] = React.useState(false);
-  // Стейт отвечающий за вид попапа со статусом регистрации и авторизации
-  const [typeInfoTooltip, setTypeInfoTooltip] = React.useState(false);
+  // Открытие попапов со статусом регистрации и авторизации
+  const [isInfoTooltipAllowedPopupOpen, setIsInfoTooltipAllowedPopupOpen] = React.useState(false);
+  const [isInfoTooltipErrorPopupOpen, setIsInfoTooltipErrorPopupOpenn] = React.useState(false)
 
   // Отображение картинки при клике на карточку
   const [selectedCard, setSelectedCard] = React.useState(null)
@@ -43,7 +45,7 @@ function App() {
   // Стейт состояния авторизации
   const [loggedIn, setLoggedIn] = React.useState(null);
 
-  // id и Email пользователя полученный после проверки токена
+  // Email пользователя полученный после проверки токена и регистрации
   const [userAuthEmail, setUserAuthEmail] = React.useState("")
 
   // Получение данных пользователя от сервера
@@ -114,15 +116,12 @@ function App() {
     const { email, password } = user;
     auth.register(email, password)
       .then(() => {
-        setTypeInfoTooltip(true)
+        setIsInfoTooltipAllowedPopupOpen(true);
         navigate("/sign-in")
       })
       .catch((err) => {
-        setTypeInfoTooltip(false)
+        setIsInfoTooltipErrorPopupOpenn(true);
         console.log(`Ошибка запроса: ${err}`)
-      })
-      .finally(() => {
-        setInfoTooltipPopupOpen(true)
       })
   }
 
@@ -132,11 +131,11 @@ function App() {
     auth.authorize(email, password)
       .then((data) => {
         localStorage.setItem("token", data.token)
-        checkToken()
+        setUserAuthEmail(email)
+        setLoggedIn(true)
       })
       .catch((err) => {
-        setInfoTooltipPopupOpen(true)
-        setTypeInfoTooltip(false)
+        setIsInfoTooltipErrorPopupOpenn(true);
         console.log(`Ошибка запроса: ${err}`)
       })
   }
@@ -145,7 +144,7 @@ function App() {
   function handleLogOut() {
     localStorage.removeItem("token")
     setLoggedIn(false);
-    setUserAuthEmail("")
+    setUserAuthEmail("");
   }
 
   //Закрытие попапов
@@ -154,7 +153,8 @@ function App() {
     setIsEditProfilePopupOpen(false)
     setIsAddPlacePopupOpen(false)
     setSelectedCard(null)
-    setInfoTooltipPopupOpen(false)
+    setIsInfoTooltipAllowedPopupOpen(false);
+    setIsInfoTooltipErrorPopupOpenn(false);
   }
 
   // Обработчик нажатия на лайк
@@ -282,9 +282,17 @@ function App() {
             card={selectedCard}
           />
           <InfoTooltip
-            isOpen={infoTooltipPopupOpen}
+            isOpen={isInfoTooltipAllowedPopupOpen}
             onClose={closeAllPopups}
-            typeInfoTooltip={typeInfoTooltip}
+            message={"Вы успешно зарегистрировались!"}
+            image={imgAuthorizationAllowed}
+          />
+
+          <InfoTooltip
+            isOpen={isInfoTooltipErrorPopupOpen}
+            onClose={closeAllPopups}
+            message={"Что-то пошло не так! Попробуйте ещё раз."}
+            image={imgAuthorizationError}
           />
         </div>
       </div>

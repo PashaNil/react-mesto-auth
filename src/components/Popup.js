@@ -4,6 +4,7 @@ function Popup({ name, isOpen, onClose, classContainer, children }) {
 
     // Закрытие попапа по клавише Esc
     React.useEffect(() => {
+        if (!isOpen) return;
         document.addEventListener("keydown", handleEscClose)
         function handleEscClose(evt) {
             if (evt.key === "Escape") {
@@ -23,7 +24,7 @@ function Popup({ name, isOpen, onClose, classContainer, children }) {
 
     return (
         <div
-            className={`popup popup_type_${name} ${isOpen ? 'popup_opened' : ''}`}
+            className={`popup popup_type_${name} ${isOpen && 'popup_opened'}`}
             onClick={closePopupOverlay}>
             <div className={`popup__${classContainer}`}>
                 <button
